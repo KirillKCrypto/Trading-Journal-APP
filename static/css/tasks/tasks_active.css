@@ -1,0 +1,180 @@
+.task-add {
+  background-color: var(--theme-color);
+  transition: all 0.3s ease;
+}
+
+.task-add:hover {
+  background-color: #1c1c1c !important;
+  transform: translateY(-1px);
+}
+
+body.dark-mode .text-body {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .list-group li {
+  background-color: #121212 !important;
+  border: 1px solid #444;
+}
+
+body.dark-mode .text-muted {
+  color: #e0e0e0 !important;
+}
+
+/* Общие стили для модальных окон */
+.modal-dark-theme {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-dark-theme strong {
+  color: #ffffff;
+}
+
+.modal-dark-theme .modal-header {
+  background-color: #242424;
+  border-bottom: 1px solid #333;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-dark-theme .modal-body {
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+  color: #e0e0e0;
+}
+
+.modal-dark-theme .modal-footer {
+  background-color: #242424;
+  border-top: 1px solid #333;
+  padding: 1rem 1.5rem;
+}
+
+/* Кнопки в модалках */
+.modal-dark-theme .btn-outline-light {
+  border-color: #666;
+  color: #444;
+  transition: all 0.3s ease;
+}
+
+.modal-dark-theme .btn-outline-light:hover {
+  background-color: #444 !important;
+  color: #fff;
+}
+
+.modal-dark-theme .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  transition: all 0.3s ease;
+}
+
+.modal-dark-theme .btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+
+
+/* Основные кнопки */
+.btn-danger {
+  background-color: var(--theme-color);
+  border-color: var(--theme-color);
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transform: translateY(-1px);
+}
+
+.edit-btn {
+  color: white;
+  background-color: #242424;
+  border: 1px solid #242424;
+  transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #121212;
+  border: 1px solid #242424;
+  transform: translateY(-1px);
+}
+
+/* Анимации модалок */
+.modal.fade .modal-dialog {
+  transform: translateY(-20px) scale(0.95);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.modal.show .modal-dialog {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Специфичные стили для модалки удаления */
+.modal-dark-theme .modal-body {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+
+/* Для светлой темы */
+body:not(.dark-mode) .modal-dark-theme {
+  background-color: #ffffff;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+body:not(.dark-mode) .modal-dark-theme strong {
+  color: #212529;
+}
+
+body:not(.dark-mode) .modal-dark-theme .modal-header,
+body:not(.dark-mode) .modal-dark-theme .modal-footer {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #212529;
+}
+
+body:not(.dark-mode) .modal-dark-theme .modal-body {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+body:not(.dark-mode) .btn-close-white {
+  filter: none;
+  opacity: 0.5;
+}
+
+/* Адаптивность */
+@media (max-width: 576px) {
+  .modal-dark-theme .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-dark-theme .modal-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .modal-dark-theme .modal-footer .btn {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+/* Фон для модальных окон */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}

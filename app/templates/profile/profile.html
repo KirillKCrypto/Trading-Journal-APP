@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль трейдера{% endblock %}
+{% block head %}
+<style>
+    .chart-small {
+      width: 100%;
+      max-width: 320px;
+      height: 320px !important;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .chart-flex {
+      width: 100%;
+      height: 360px !important;
+    }
+    .card-header {
+        background-color: var(--theme-color) !important;
+    }
+    .chart-header {
+        color: white;
+    }
+    body.dark-mode .card-body {
+        background-color: #1c1c1c;
+        border: 1px solid #444;
+    }
+    body.dark-mode .list-group li {
+        color: white;
+        border-bottom: 1px solid #444;
+        background-color: #1c1c1c;
+    }
+    body.dark-mode .chart-container div {
+        background-color: #1c1c1c !important;
+    }
+</style>
+{% endblock%}
+{% block content %}
+<div class="container container-profile">
+<div class="row g-4">
+    <h1 class="mb-4">👤 Профиль трейдера</h1>
+    <!-- Сводная статистика -->
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">📊 Сводная статистика</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Количество сделок</span>
+                        <strong>{{ total_trades }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Суммарный RR</span>
+                        <strong>{{ rr_sum }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Средний RR</span>
+                        <strong>{{ rr_avg }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Макс. серия побед (Win Streak)</span>
+                        <strong>{{ max_win_streak }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Макс. серия поражений (Loss Streak)</span>
+                        <strong>{{ max_loss_streak }}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Winrate and equity curve -->
+<div class="mt-4 d-flex flex-wrap justify-content-between gap-4 chart-container">
+  <div class="card shadow-sm p-3 bg-white rounded" style="flex: 1 1 300px;">
+    <h4 class="chart-header">Winrate</h4>
+    <canvas id="winrateChart" class="chart-small"></canvas>
+  </div>
+
+  <div class="card shadow-sm p-3 bg-white rounded" style="flex: 1 1 600px;">
+    <h4 class="chart-header">Equity Curve</h4>
+    <canvas id="equityChart" class="chart-flex"></canvas>
+  </div>
+</div>
+</div>
+<script>
+  window.chartData = {
+    winrateLabels: {{ winrate_data.labels | tojson }},
+    winrateData: {{ winrate_data.data | tojson }},
+    equityLabels: {{ equity_labels | tojson }},
+    equityData: {{ equity_data | tojson }}
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script defer src="{{ url_for('static', filename='js/profile.js') }}"></script>
+
+
+{% endblock %}

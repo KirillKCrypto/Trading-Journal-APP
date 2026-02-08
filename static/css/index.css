@@ -1,0 +1,120 @@
+ .index-buttons > a {
+    background-color: var(--theme-color);
+  }
+  .index-buttons > a:hover {
+    background-color: #1c1c1c;
+    transition: 0.5s;
+  }
+  .values-container > div {
+    background-color: var(--theme-color) !important;
+    color: #fff !important;
+  }
+
+  body.dark-mode .values-container > div {
+    background-color: #121212 !important;
+    border-color: #444 !important;
+    color: #fff !important;
+  }
+  .form-select.active-filter {
+  border-color: var(--bs-primary) !important;
+  }
+
+  body:not(.dark-mode) .form-select.active-filter {
+    background-color: #f8f9fa !important; /* светлая тема */
+  }
+
+  body.dark-mode .form-select.active-filter {
+    background-color: #1e1e1e !important;
+    color: #fff !important;
+    border-color: #5588ff !important;
+  }
+
+  /* Стили для массового удаления */
+.trade-checkbox {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+#deleteSelected {
+    transition: all 0.3s ease;
+}
+
+#selectAll {
+    cursor: pointer;
+}
+
+/* Предотвращаем переход по ссылке при клике на чекбокс */
+.clickable-row td:first-child {
+    cursor: default;
+}
+
+.clickable-row td:not(:first-child) {
+    cursor: pointer;
+}
+
+/* Индикатор выбранных сделок */
+.trade-checkbox:checked {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+/* Стили для модального окна в темной теме */
+.modal-dark-theme .modal-content {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+}
+
+.modal-dark-theme .modal-header {
+  background-color: #242424;
+  border-bottom: 1px solid #333;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-dark-theme .modal-body {
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+  color: #e0e0e0;
+}
+
+.modal-dark-theme .modal-footer {
+  background-color: #242424;
+  border-top: 1px solid #333;
+  border-radius: 0 0 12px 12px;
+}
+
+.modal-dark-theme .btn-close-white {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Стили для текста в модальном окне */
+.modal-dark-theme .text-muted {
+  color: #a0aec0 !important;
+}
+
+/* Стили для кнопок в модальном окне в темной теме */
+.modal-dark-theme .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.modal-dark-theme .btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.modal-dark-theme .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.modal-dark-theme .btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.modal-dark-theme .modal-footer {
+  background-color: #242424;
+  border-top: 1px solid #333;
+}

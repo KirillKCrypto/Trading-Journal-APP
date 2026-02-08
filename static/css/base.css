@@ -1,0 +1,229 @@
+:root {
+    --theme-color: #0A356A;
+  }
+
+  html, body {
+  height: auto;        /* не фиксируй высоту, чтобы длинные страницы не обрезались */
+  min-height: 100%;
+  background-color: inherit;
+  }
+
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ========================= */
+  /*        Тёмная тема        */
+  /* ========================= */
+  html.dark-mode-html body,
+  body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  /* Кнопка переключения темы */
+  #toggle-theme {
+    border: 1px solid #444;
+    font-size: 1rem;
+  }
+
+  /* Контейнер */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Навигация */
+  .navbar-dark .navbar-nav .nav-link {
+    color: #ccc;
+  }
+
+  .navbar-dark .navbar-nav .nav-link:hover,
+  .navbar-dark .navbar-nav .nav-link.active {
+    color: #fff;
+  }
+
+  /* Темная тема: navbar и таблицы */
+  body.dark-mode .navbar,
+  body.dark-mode .table {
+    background-color: #1f1f1f !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+  }
+
+  /* Формы */
+  body.dark-mode .form-control,
+  body.dark-mode .form-select {
+    background-color: #2b2b2b;
+    color: #ffffff;
+    border-color: #444;
+  }
+
+  body.dark-mode .form-control::placeholder {
+    color: #999;
+  }
+
+  /* Кнопки */
+  body.dark-mode .btn {
+    background-color: #121212;
+    border-color: #444;
+    color: white;
+  }
+
+  body.dark-mode .btn:hover {
+    background-color: #464646;
+  }
+
+  /* ====================== */
+  /* Таблица и стили колонок */
+  /* ====================== */
+  .table-responsive {
+    width: 100%;
+    margin: 0 auto 1rem;
+  }
+
+  .table {
+    font-size: 0.9rem;
+    border-collapse: separate !important;
+    border-spacing: 0 6px;
+  }
+
+  .table thead th {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none !important;
+    font-weight: 600;
+    vertical-align: middle;
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+
+  .table tbody tr {
+    background-color: #fff;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .table tbody tr:hover {
+    background-color: #e9f0ff;
+  }
+
+  .table td {
+    padding: 6px 8px;
+    vertical-align: middle;
+    white-space: nowrap;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none !important;
+  }
+
+  /* Узкие колонки */
+  .table th:nth-child(2),
+  .table td:nth-child(2),
+  .table th:nth-child(3),
+  .table td:nth-child(3),
+  .table th:nth-child(4),
+  .table td:nth-child(4),
+  .table th:nth-child(10),
+  .table td:nth-child(10),
+  .table th:nth-child(11),
+  .table td:nth-child(11) {
+    max-width: 60px;
+    padding: 6px 6px;
+  }
+
+  /* =========================== */
+  /*     Темная тема: таблица    */
+  /* =========================== */
+  body.dark-mode .table {
+    background-color: transparent !important;
+    color: #e0e0e0 !important;
+  }
+
+  body.dark-mode .table thead th {
+    background-color: #2a2a2a;
+    color: #ddd;
+  }
+
+  body.dark-mode .table tbody {
+    background-color: #1c1c1c;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  body.dark-mode .table tbody tr:hover {
+    background-color: #2a3a55;
+  }
+
+  body.dark-mode td {
+    color: #f0f0f0;
+    background-color: #1c1c1c;
+  }
+
+  /* Navbar */
+  body.dark-mode .navbar {
+    background-color: #1f1f1f !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+  }
+
+  /* Превью скриншотов */
+  .screenshot-thumb {
+    width: 90px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .screenshot-thumb:hover {
+    border-color: #1a73e8;
+    box-shadow: 0 4px 8px rgba(26, 115, 232, 0.7);
+  }
+
+  body.dark-mode .screenshot-thumb {
+    border-color: #555;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.7);
+  }
+
+  body.dark-mode .screenshot-thumb:hover {
+    border-color: #5599ff;
+    box-shadow: 0 4px 8px rgba(85,153,255,0.8);
+  }
+
+  /* Бейджи */
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+  }
+
+  /* Цвета PnL */
+  .text-success {
+    color: #2a9d8f !important;
+  }
+
+  .text-danger {
+    color: #e63946 !important;
+  }
+

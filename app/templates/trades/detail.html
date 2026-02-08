@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/trades/detail.css') }}">
+{% endblock %}
+
+{% block title %}Детали сделки{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Детали сделки</h1>
+
+    <a href="{{ url_for('trades.index') }}" class="btn btn-back mb-4">← Назад к журналу</a>
+
+    <div class="table-responsive trade-table mb-4">
+        <table class="table mb-0 table-detail">
+            <tbody>
+                <tr><th>Дата</th><td>{{ trade.date.strftime('%d.%m.%Y') }}</td></tr>
+                <tr><th>Инструмент</th><td>{{ trade.symbol }}</td></tr>
+                <tr><th>День недели</th><td>{{ trade.weekday }}</td></tr>
+                <tr><th>Сессия</th><td>{{ trade.session }}</td></tr>
+                <tr><th>Позиция</th><td>{{ trade.position }}</td></tr>
+                <tr><th>Direction</th><td>{{ trade.direction }}</td></tr>
+                <tr><th>Bias</th><td>{{ trade.bias }}</td></tr>
+                <tr><th>Риск</th><td>{{ '%.1f' | format(trade.risk * 100) if trade.risk is not none else '-' }}%</td></tr>
+                <tr><th>RR</th><td>{{ trade.rr if trade.rr is not none else '-' }}</td></tr>
+                <tr><th>Profit</th>
+                    <td>
+                        {% if trade.rr is not none and trade.risk is not none %}
+                            <span class="{% if trade.rr > 0 %}text-profit{% else %}text-loss{% endif %}">
+                                {{ "%.2f"|format(trade.rr * trade.risk * 100) }}%
+                            </span>
+                        {% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr><th>Результат</th>
+                    <td>
+                        {% if trade.result_type == 'TP' %}
+                            <span class="badge bg-success">TP</span>
+                        {% elif trade.result_type == 'SL' %}
+                            <span class="badge bg-danger">SL</span>
+                        {% elif trade.result_type == 'BE' %}
+                            <span class="badge bg-secondary">BE</span>
+                        {% else %}
+                            <span class="badge bg-light text-dark">{{ trade.result_type or '?' }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr><th>Логика входа</th><td class="text-break">{{ trade.logic }}</td></tr>
+                <tr><th>Детали входа</th><td class="text-break">{{ trade.entry_details }}</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="info-card">
+                <div class="info-card-header">Ошибки</div>
+                {{ trade.mistakes | default('-', true) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card">
+                <div class="info-card-header">Заметки</div>
+                {{ trade.notes | default('-', true) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+    {% if trade.screenshot_1h_path %}
+        <div>
+            <div class="screenshot-title">Скриншот 1H</div>
+            <img src="{{ url_for('static', filename=trade.screenshot_1h_path) }}" alt="1H Screenshot" class="screenshot-img" />
+        </div>
+    {% endif %}
+
+    {% if trade.screenshot_5m_path %}
+        <div>
+            <div class="screenshot-title">Скриншот 5M</div>
+            <img src="{{ url_for('static', filename=trade.screenshot_5m_path) }}" alt="5M Screenshot" class="screenshot-img" />
+        </div>
+    {% endif %}
+
+    {% if trade.screenshot_3m_path %}
+        <div>
+            <div class="screenshot-title">Скриншот 3M</div>
+            <img src="{{ url_for('static', filename=trade.screenshot_3m_path) }}" alt="3M Screenshot" class="screenshot-img" />
+        </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

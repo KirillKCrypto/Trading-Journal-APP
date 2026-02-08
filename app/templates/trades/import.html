@@ -1,0 +1,388 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+    .btn-primary {
+        background-color: var(--theme-color);
+    }
+    .btn-primary:hover {
+        background-color: #5c636a;
+    }
+    .btn-secondary {
+        background-color: #444;
+    }
+    .btn-success {
+        background-color: #28a745;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+    }
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .info-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    .instruction-step {
+        background: #f8f9fa;
+        border-left: 4px solid var(--theme-color);
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 0 4px 4px 0;
+    }
+    body.dark-mode .instruction-step {
+        background: #2d3748;
+        border-left-color: var(--theme-color);
+    }
+    .required-field::after {
+        content: " *";
+        color: #dc3545;
+    }
+    .template-section {
+        background: #e7f3ff;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 25px;
+        border: 2px dashed #0d6efd;
+    }
+    body.dark-mode .template-section {
+        background: #1a365d;
+        border-color: #4299e1;
+    }
+    .copy-btn {
+        background: var(--theme-color);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .copy-btn:hover {
+        background: #5c636a;
+        transform: translateY(-1px);
+    }
+    .template-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 15px 0;
+    }
+</style>
+{% endblock %}
+{% block title %}Импорт сделок из Notion{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="form-container">
+        <h2 class="mb-4">Импортировать сделки из Notion</h2>
+
+        <!-- Секция шаблона -->
+        <div class="template-section">
+            <h4 class="mb-3">🚀 Быстрый старт с нашим шаблоном</h4>
+
+            <p class="mb-3">Используйте готовый шаблон базы данных, чтобы начать работу мгновенно:</p>
+
+            <div class="template-actions">
+                <a href="https://www.notion.so/Trading-Journal-29f71935512181a4a3eae231f4479528?source=copy_link"
+                   target="_blank"
+                   class="btn btn-success">
+                    📋 Открыть шаблон в Notion
+                </a>
+                <button class="copy-btn" onclick="copyTemplateLink(this)">
+                    📎 Копировать ссылку
+                </button>
+            </div>
+
+            <div class="mb-3">
+                <h6>Как использовать шаблон:</h6>
+                <ol class="mb-0">
+                    <li>Нажмите "Открыть шаблон в Notion" выше</li>
+                    <li>В правом верхнем углу нажмите <strong>"Duplicate"</strong></li>
+                    <li>Шаблон появится в вашем рабочем пространстве</li>
+                    <li>Начните добавлять свои сделки в таблицу</li>
+                    <li>Для интеграции используйте инструкции ниже</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Показываем сообщения flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="mb-4">
+            <div class="instruction-step">
+                <h5>📋 Шаг 1: Создайте Integration в Notion</h5>
+                <p class="mb-1">1. Перейдите на <a href="https://www.notion.so/my-integrations" target="_blank">My Integrations</a></p>
+                <p class="mb-1">2. Нажмите "New integration"</p>
+                <p class="mb-1">3. Заполните название (например, "Trade Importer")</p>
+                <p class="mb-1">4. Выберите нужный Workspace</p>
+                <p class="mb-0">5. Скопируйте "Internal Integration Token" (начинается с <code>ntn_</code>)</p>
+            </div>
+
+            <div class="instruction-step">
+                <h5>🔑 Шаг 2: Получите Database ID</h5>
+                <p class="mb-1">1. Откройте вашу базу данных в Notion</p>
+                <p class="mb-1">2. Скопируйте ID из URL:</p>
+                <code>https://www.notion.so/workspace/<strong class="text-primary">a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6</strong>?...</code>
+                <p class="mb-0 mt-1">(это 32-символьная строка между / и ?)</p>
+            </div>
+
+            <div class="instruction-step">
+                <h5>🔗 Шаг 3: Дайте доступ Integration</h5>
+                <p class="mb-1">1. В вашей базе данных нажмите "..." в правом верхнем углу</p>
+                <p class="mb-1">2. Выберите "Add connections" или "Connections"</p>
+                <p class="mb-0">3. Найдите ваше integration и подключите его</p>
+            </div>
+        </div>
+
+        <form action="{{ url_for('trades.import_notion') }}" method="POST">
+            <div class="mb-3">
+                <label for="notion_token" class="form-label required-field">
+                    Notion Integration Token
+                </label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="notion_token" name="notion_token"
+                           placeholder="ntn_xxxxxxxxxxxxxxxxxxxxxxxx"
+                           value="{{ request.form.notion_token or '' }}" required>
+                    <button type="button" class="btn btn-outline-secondary" onclick="toggleTokenVisibility()">
+                        👁️
+                    </button>
+                </div>
+                <div class="info-text">
+                    Начинается с <code>ntn_</code>.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="database_id" class="form-label required-field">
+                    Database ID
+                </label>
+                <input type="text" class="form-control" id="database_id" name="database_id"
+                       placeholder="a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+                       value="{{ request.form.database_id or '' }}" required>
+                <div class="info-text">
+                    32-символьный ID базы данных.
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    🚀 Начать импорт
+                </button>
+                <a href="{{ url_for('trades.index') }}" class="btn btn-secondary">← Назад к сделкам</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Функция для показа временного сообщения
+function showTempMessage(message, type = 'success') {
+    const messageEl = document.createElement('div');
+    messageEl.textContent = message;
+    messageEl.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : '#dc3545'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 10000;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(messageEl);
+
+    setTimeout(() => {
+        messageEl.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(messageEl);
+        }, 300);
+    }, 3000);
+}
+
+// Анимации для сообщений
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Основная функция копирования
+async function copyTemplateLink(button) {
+    const templateLink = "https://www.notion.so/Trading-Journal-29f71935512181a4a3eae231f4479528?source=copy_link";
+
+    const originalText = button.innerHTML;
+
+    try {
+        // Показываем состояние "в процессе"
+        button.innerHTML = '⏳ Копируем...';
+        button.disabled = true;
+
+        // Используем современный Clipboard API
+        await navigator.clipboard.writeText(templateLink);
+
+        // Успех
+        button.innerHTML = '✅ Скопировано!';
+        showTempMessage('Ссылка скопирована в буфер обмена!');
+
+        // Возвращаем исходное состояние через 2 секунды
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2000);
+
+    } catch (error) {
+        // Ошибка - предлагаем альтернативу
+        console.error('Ошибка копирования:', error);
+
+        button.innerHTML = '❌ Ошибка';
+        showTempMessage('Не удалось скопировать автоматически', 'error');
+
+        // Через 2 секунды показываем альтернативный вариант
+        setTimeout(() => {
+            button.innerHTML = '📋 Скопировать вручную';
+            button.disabled = false;
+
+            // При следующем клике показываем ссылку для ручного копирования
+            button.onclick = () => showManualCopy(templateLink, button);
+        }, 2000);
+    }
+}
+
+// Функция для ручного копирования (используется только при ошибке)
+function showManualCopy(link, button) {
+    // Создаем модальное окно для ручного копирования
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        ">
+            <h4 style="margin: 0 0 16px 0; color: #333;">Скопируйте ссылку вручную</h4>
+            <input type="text"
+                   value="${link}"
+                   readonly
+                   style="
+                       width: 100%;
+                       padding: 12px;
+                       border: 2px solid #ddd;
+                       border-radius: 6px;
+                       font-size: 14px;
+                       margin-bottom: 16px;
+                   "
+                   onclick="this.select()">
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button onclick="this.closest('.manual-copy-modal').remove()"
+                        style="
+                            padding: 10px 20px;
+                            border: 1px solid #ddd;
+                            background: #f8f9fa;
+                            border-radius: 6px;
+                            cursor: pointer;
+                        ">Закрыть</button>
+            </div>
+        </div>
+    `;
+
+    modal.querySelector('input').select();
+    modal.classList.add('manual-copy-modal');
+    document.body.appendChild(modal);
+
+    // Возвращаем кнопку в исходное состояние
+    button.innerHTML = '📎 Копировать ссылку';
+    button.onclick = (e) => copyTemplateLink(button);
+}
+
+// Переключение видимости токена
+function toggleTokenVisibility(button) {
+    const tokenInput = document.getElementById('notion_token');
+
+    if (tokenInput.type === 'password') {
+        tokenInput.type = 'text';
+        button.textContent = '🙈 Скрыть';
+    } else {
+        tokenInput.type = 'password';
+        button.textContent = '👁️ Показать';
+    }
+}
+
+// Автоматическое форматирование Database ID
+document.getElementById('database_id')?.addEventListener('input', function(e) {
+    let value = e.target.value;
+    value = value.replace(/[^a-zA-Z0-9]/g, '').substring(0, 32);
+    e.target.value = value;
+});
+
+// Автоматическое форматирование токена
+document.getElementById('notion_token')?.addEventListener('input', function(e) {
+    let value = e.target.value;
+    value = value.replace(/\s/g, '');
+    e.target.value = value;
+});
+
+// Проверка перед отправкой формы
+document.querySelector('form')?.addEventListener('submit', function(e) {
+    const token = document.getElementById('notion_token').value;
+    const dbId = document.getElementById('database_id').value;
+
+    if (!token || !dbId) {
+        e.preventDefault();
+        showTempMessage('Пожалуйста, заполните оба поля', 'error');
+        return;
+    }
+
+    if (!token.startsWith('ntn_')) {
+        if (!confirm('Токен обычно начинается с "ntn_". Вы уверены, что токен корректен?')) {
+            e.preventDefault();
+            return;
+        }
+    }
+
+    if (dbId.length !== 32) {
+        if (!confirm('Database ID должен содержать 32 символа. Вы уверены, что ID корректен?')) {
+            e.preventDefault();
+            return;
+        }
+    }
+});
+</script>
+{% endblock %}

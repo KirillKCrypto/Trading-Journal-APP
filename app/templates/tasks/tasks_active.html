@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Текущие задачи{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tasks/tasks_active.css') }}">
+<script defer src="{{ url_for('static', filename='js/tasks/tasks_active.js') }}"></script>
+{% endblock %}
+{% block content %}
+<div class="container container-tasks">
+  <h2 class="text-body">🔧 Текущие задачи</h2>
+
+  <a href="{{ url_for('tasks.add_task') }}" class="btn btn-primary mb-3 task-add">➕ Добавить задачу</a>
+  <a href="{{ url_for('tasks.completed_tasks') }}" class="btn btn-outline-secondary mb-3 float-end">
+    Перейти к завершённым задачам →
+  </a>
+
+  <ul class="list-group" id="task-list">
+  {% for task in tasks %}
+    <li class="list-group-item d-flex justify-content-between align-items-center bg-body text-body task-item"
+        data-id="{{ task.id }}"
+        data-title="{{ task.title }}"
+        data-description="{{ task.description }}"
+        data-priority="{{ task.priority }}"
+        data-completed="{{ 'Да' if task.completed else 'Нет' }}"
+        data-created="{{ task.created_at.strftime('%Y-%m-%d %H:%M:%S') }}">
+
+      <div class="flex-grow-1">
+        <form action="{{ url_for('tasks.complete_task', task_id=task.id) }}" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-sm btn-outline-secondary">⬜</button>
+        </form>
+        <strong class="ms-2">{{ task.title }}</strong>
+        {% if task.description and task.description|length <= 50 %}
+          <p class="mb-0 small text-muted">{{ task.description }}</p>
+        {% endif %}
+        <p class="mb-0 text-muted">Приоритет: {{ task.priority }}</p>
+      </div>
+      <a href="{{ url_for('tasks.edit_task', task_id=task.id) }}" class="edit-btn btn btn-sm btn-outline-primary ms-2">
+  Редактировать
+      </a>
+      <form action="{{ url_for('tasks.delete_task', task_id=task.id) }}" method="post" class="delete-form ms-2">
+        <button type="submit" class="btn btn-sm btn-danger">
+          Удалить
+        </button>
+      </form>
+
+    </li>
+  {% else %}
+    <li class="list-group-item text-muted bg-body text-body">Нет текущих задач.</li>
+  {% endfor %}
+  </ul>
+</div>
+
+<!-- Модальные окна -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark-theme">
+      <div class="modal-header border-secondary-subtle">
+        <h5 class="modal-title" id="taskModalLabel">📋 Детали задачи</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Название:</strong> <span id="modalTitle"></span></p>
+        <p><strong>Описание:</strong> <span id="modalDescription"></span></p>
+        <p><strong>Приоритет:</strong> <span id="modalPriority"></span></p>
+        <p><strong>Выполнена:</strong> <span id="modalCompleted"></span></p>
+        <p><strong>Создана:</strong> <span id="modalCreated"></span></p>
+      </div>
+      <div class="modal-footer border-secondary-subtle">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content modal-dark-theme">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">Подтверждение удаления</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите удалить эту задачу? Это действие нельзя отменить.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

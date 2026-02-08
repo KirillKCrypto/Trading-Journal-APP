@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Добавить задачу{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Добавление задачи</h1>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label for="title" class="form-label">Название</label>
+      <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Описание</label>
+      <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="priority" class="form-label">Приоритет</label>
+      <select class="form-control" id="priority" name="priority">
+        <option value="Низкий">Низкий</option>
+        <option value="Средний" selected>Средний</option>
+        <option value="Высокий">Высокий</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить задачу</button>
+    <a href="{{ url_for('tasks.task_list') }}" class="btn btn-secondary">Отмена</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+.trade-table {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+        border: 1px solid #dee2e6;
+    }
+    .trade-table th {
+        background-color: #f5f7fa;
+        color: #495057;
+        font-weight: 600;
+        width: 30%;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .trade-table td {
+        vertical-align: middle;
+        color: #333;
+        border-top: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        word-break: break-word;
+    }
+    .text-profit {
+        color: #198754;
+        font-weight: 600;
+    }
+    .text-loss {
+        color: #dc3545;
+        font-weight: 600;
+    }
+    .info-card {
+        background: #fefefe;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgb(0 0 0 / 0.05);
+        color: #4a4a4a;
+        min-height: 150px;
+        padding: 1rem 1.25rem;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+    }
+    .info-card-header {
+        font-weight: 600;
+        color: #343a40;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 0.3rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.05rem;
+    }
+    .screenshot-title {
+        color: #495057;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .screenshot-img {
+        border-radius: 6px;
+        box-shadow: 0 3px 8px rgb(0 0 0 / 0.12);
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1.25rem;
+    }
+    .btn-back {
+        background-color: #e9ecef;
+        color: #495057;
+        border: 1px solid #ced4da;
+        transition: background-color 0.2s ease;
+    }
+    .btn-back:hover {
+        background-color: #dee2e6;
+        color: #212529;
+    }
+    body.dark-mode .table-detail {
+        background-color: #1c1c1c !important;
+    }
+    body.dark-mode .trade-table {
+        background-color: #1c1c1c !important;
+        border: 1px solid #383737;
+    }
+    body.dark-mode th {
+        background-color: #383737 !important;
+        border: 1px solid #1c1c1c;
+        color: #f0f0f0;
+    }
+
+    body.dark-mode .info-card {
+        background-color: #1c1c1c;
+        border: 1px solid #383737;
+        color: #f0f0f0;
+    }
+    body.dark-mode .info-card-header {
+        color: #f0f0f0;
+        border-bottom: 1px solid #383737;
+    }
+    body.dark-mode .screenshot-title {
+        color: #f0f0f0;
+    }

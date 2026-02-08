@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}AI Трейдинг Помощник{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ai_helper.css') }}">
+<script defer src="{{ url_for('static', filename='js/ai_helper.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="ai-container">
+  <div id="ai-header">
+    <h2 style="margin:0; font-weight:600;">AI Трейдинг Помощник</h2>
+  </div>
+
+  <div id="chat-container" class="chatblock"></div>
+
+  <div id="loading-indicator" style="display:none;">
+    <em>Обрабатывается<span id="dots">...</span></em>
+  </div>
+
+  <form id="ai-form" class="input-form" autocomplete="off">
+    <textarea id="user_text" name="text" placeholder="Введите запрос..." required></textarea>
+    <button id="submit-btn" type="submit">Отправить</button>
+  </form>
+</div>
+{% endblock %}

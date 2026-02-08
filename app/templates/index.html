@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block head %}
+{% block scripts %}
+<script>
+    // Передаем переменные из Flask в JS
+    window.flaskData = {
+        currentDate: "{{ current_date }}",
+        dateFrom: "{{ filters.date_from or '' }}",
+        dateTo: "{{ filters.date_to or '' }}",
+        deleteMultipleUrl: "{{ url_for('trades.delete_multiple_trades') }}"
+    };
+</script>
+<script defer src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block title %}Торговый журнал сделок{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+      <h1 class="mb-2 mb-md-0">Торговый журнал сделок</h1>
+      <div class="index-buttons">
+          <a href="{{ url_for('trades.add_trade') }}" class="btn btn-primary me-2 mb-2 mb-md-0">Добавить сделку</a>
+          <a href="{{ url_for('trades.import_notion') }}" class="btn btn-success mb-2 mb-md-0">Импорт журнала Notion</a>
+      </div>
+  </div>
+
+  <!-- Кнопка массового удаления -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <form method="get" id="filter-form" class="flex-grow-1 me-3">
+      <div class="row g-2 align-items-end">
+        {% set filter_fields = {'symbol': 'Все символы', 'session': 'Все сессии', 'position': 'Все позиции', 'result_type': 'Все результаты'} %}
+        {% for field, label in filter_fields.items() %}
+          <div class="col-6 col-md">
+              <select name="{{ field }}" class="form-select form-select-sm {% if filters[field] %}active-filter{% endif %}">
+              <option value="">{{ label }}</option>
+              {% for val in unique[field ~ 's'] %}
+                <option value="{{ val }}" {% if filters[field] == val|string %}selected{% endif %}>{{ val }}</option>
+              {% endfor %}
+              </select>
+          </div>
+        {% endfor %}
+
+        <div class="col-6 col-md">
+          <input
+            type="text"
+            id="date_from"
+            name="date_from"
+            class="form-control form-control-sm"
+            placeholder="Дата с"
+            value="{{ filters.date_from or '' }}"
+            autocomplete="off"
+          >
+        </div>
+        <div class="col-6 col-md">
+          <input
+            type="text"
+            id="date_to"
+            name="date_to"
+            class="form-control form-control-sm"
+            placeholder="Дата по"
+            value="{{ filters.date_to or '' }}"
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="col-auto">
+          <a href="{{ url_for('trades.index') }}" class="btn btn-sm btn-outline-secondary">✖</a>
+        </div>
+      </div>
+    </form>
+
+    <button id="deleteSelected" class="btn btn-danger ms-2" style="display: none;">
+      🗑️ Удалить выбранные
+    </button>
+  </div>
+
+  {% if trades %}
+  <div class="d-flex justify-content-end align-items-center gap-3 mb-3 flex-wrap values-container">
+      <div class="px-3 py-2 bg-light border rounded shadow-sm text-dark">
+          <strong>avg RR:</strong> {{ "%.2f"|format(rr_avg) }}
+      </div>
+      <div class="px-3 py-2 bg-light border rounded shadow-sm text-dark">
+          <strong>sum RR:</strong> {{ "%.2f"|format(rr_sum) }}
+      </div>
+  </div>
+
+  <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle bg-white shadow-sm small text-center">
+        <thead class="table-light text-dark">
+          <tr>
+            <th width="40">
+              <input type="checkbox" id="selectAll" class="form-check-input">
+            </th>
+            <th>#</th>
+            <th>📅</th>
+            <th>💱</th>
+            <th>🕐</th>
+            <th>📈</th>
+            <th>Bias</th>
+            <th>Risk</th>
+            <th>RR</th>
+            <th>PnL</th>
+            <th>⚡</th>
+            <th>🖼️</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for trade in trades %}
+          <tr class="clickable-row" style="cursor:pointer;">
+            <td onclick="event.stopPropagation()">
+              <input type="checkbox" class="form-check-input trade-checkbox" value="{{ trade.id }}">
+            </td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ loop.index }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ trade.date.strftime('%d.%m') }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ trade.symbol }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ trade.session[0:2] }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ trade.position if trade.position else '' }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ trade.bias }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ '%.1f' | format(trade.risk * 100) if trade.risk is not none else '-' }}%</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">{{ trade.rr if trade.rr is not none else '-' }}</td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">
+              {% if trade.rr is not none and trade.risk is not none %}
+                <span class="{% if trade.rr > 0 %}text-success{% else %}text-danger{% endif %}">
+                  {{ "%.2f" | format(trade.rr * trade.risk * 100) }}%
+                </span>
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">
+              {% if trade.result_type == 'TP' %}
+                <span class="badge bg-success">TP</span>
+              {% elif trade.result_type == 'SL' %}
+                <span class="badge bg-danger">SL</span>
+              {% elif trade.result_type == 'BE' %}
+                <span class="badge bg-secondary">BE</span>
+              {% else %}
+                <span class="badge bg-light text-dark">?</span>
+              {% endif %}
+            </td>
+            <td onclick="window.location='{{ url_for('trades.trade_detail', trade_id=trade.id) }}'">
+              {% set screenshot = trade.screenshot_1h_path or trade.screenshot_5m_path or trade.screenshot_3m_path %}
+              {% if screenshot %}
+                <a id="screenshot-img" href="{{ url_for('static', filename=screenshot) }}" target="_blank" rel="noopener noreferrer">
+                  <img src="{{ url_for('static', filename=screenshot) }}" alt="Screenshot" class="screenshot-thumb" />
+                </a>
+              {% else %}
+                -
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  {% else %}
+  <p class="text-muted">Нет сделок, соответствующих выбранным фильтрам. Попробуйте изменить критерии поиска.</p>
+  {% endif %}
+</div>
+
+<!-- Модальное окно подтверждения удаления -->
+<div class="modal fade modal-dark-theme" id="deleteConfirmModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Подтверждение удаления</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Вы уверены, что хотите удалить <span id="selectedCount">0</span> выбранных сделок?</p>
+        <p class="text-muted small">Это действие нельзя отменить.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-danger" id="confirmDelete">Удалить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

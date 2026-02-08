@@ -1,0 +1,176 @@
+
+:root {
+  --chat-bg-light: #f8f9fa;
+  --chat-bg-dark: #121212;
+  --chat-accent: var(--theme-color);
+  --chat-radius: 14px;
+}
+
+/* --- Контейнер --- */
+#ai-container {
+  width: 1200px;
+  margin: 0 auto;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 15px;
+}
+
+/* --- Верхняя панель --- */
+#ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: var(--chat-radius);
+  background: var(--chat-bg-light);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  transition: background 0.3s;
+}
+body.dark-mode #ai-header {
+  background: #1e1e1e;
+}
+
+#mode-select {
+  display: flex;
+  gap: 10px;
+}
+.mode-btn {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.mode-btn.active {
+  background-color: var(--chat-accent);
+  color: white;
+  font-weight: 600;
+}
+
+/* --- Чат --- */
+.chatblock {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--chat-bg-light);
+  border-radius: var(--chat-radius);
+  padding: 16px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+  scroll-behavior: smooth;
+  transition: background 0.3s;
+}
+body.dark-mode .chatblock {
+  background: #1b1b1b;
+}
+
+/* --- Сообщения --- */
+.chat-message {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.chat-message.user { flex-direction: row-reverse; }
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+}
+.chat-message.user .chat-avatar {
+  background: var(--chat-accent);
+}
+.chat-message.assistant .chat-avatar {
+  background: #e9ecef;
+  color: #222;
+}
+body.dark-mode .chat-message.assistant .chat-avatar {
+  background: #2b2b2b;
+  color: #fff;
+}
+
+.chat-bubble {
+  max-width: 75%;
+  padding: 12px 18px;
+  border-radius: 16px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.chat-message.user .chat-bubble {
+  background: var(--chat-accent);
+  color: white;
+}
+.chat-message.assistant .chat-bubble {
+  background: #f1f3f5;
+  color: #212529;
+}
+body.dark-mode .chat-message.assistant .chat-bubble {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* --- Форма --- */
+.input-form {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+#user_text {
+  flex: 1;
+  resize: none;
+  min-height: 60px;
+  border-radius: var(--chat-radius);
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+body.dark-mode #user_text {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+#submit-btn {
+  padding: 12px 20px;
+  border-radius: var(--chat-radius);
+  background: var(--chat-accent);
+  color: #fff;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#submit-btn:hover {
+  opacity: 0.9;
+}
+
+/* --- Лоадер --- */
+#loading-indicator {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
+
+/* --- Тёмная тема --- */
+body.dark-mode {
+  color: #e0e0e0;
+}
