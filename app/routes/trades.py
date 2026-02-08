@@ -161,7 +161,7 @@ def import_notion():
         notion_token = request.form.get('notion_token', '').strip()
         database_id = request.form.get('database_id', '').strip()
 
-        # Если поля заполнены в форме, используем их, иначе берем из .env
+
         NOTION_TOKEN = notion_token if notion_token else os.getenv('NOTION_TOKEN')
         NOTION_DATABASE_ID = database_id if database_id else os.getenv('NOTION_DATABASE_ID')
 

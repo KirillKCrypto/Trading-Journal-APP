@@ -1,0 +1,173 @@
+{
+  "timestamp": 1770557113,
+  "events": [
+    {
+      "date": "2026-02-09T13:30:00-05:00",
+      "title": "FOMC Member Waller Speaks",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-09T15:15:00-05:00",
+      "title": "FOMC Member Bostic Speaks",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T06:00:00-05:00",
+      "title": "NFIB Small Business Index",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T08:20:00-05:00",
+      "title": "ADP Weekly Employment Change",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T08:30:00-05:00",
+      "title": "Core Retail Sales m/m",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T08:30:00-05:00",
+      "title": "Retail Sales m/m",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T08:30:00-05:00",
+      "title": "Employment Cost Index q/q",
+      "impact": "Medium",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T08:30:00-05:00",
+      "title": "Import Prices m/m",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T10:00:00-05:00",
+      "title": "Business Inventories m/m",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T12:00:00-05:00",
+      "title": "FOMC Member Hammack Speaks",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T13:00:00-05:00",
+      "title": "FOMC Member Logan Speaks",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-10T16:30:00-05:00",
+      "title": "API Weekly Statistical Bulletin",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-11T08:30:00-05:00",
+      "title": "Average Hourly Earnings m/m",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-11T08:30:00-05:00",
+      "title": "Non-Farm Employment Change",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-11T08:30:00-05:00",
+      "title": "Unemployment Rate",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-11T10:30:00-05:00",
+      "title": "Crude Oil Inventories",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-11T13:01:00-05:00",
+      "title": "10-y Bond Auction",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-11T14:00:00-05:00",
+      "title": "Federal Budget Balance",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T08:30:00-05:00",
+      "title": "Unemployment Claims",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T10:00:00-05:00",
+      "title": "Existing Home Sales",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T10:00:00-05:00",
+      "title": "Mortgage Delinquencies",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T10:30:00-05:00",
+      "title": "Natural Gas Storage",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T13:01:00-05:00",
+      "title": "30-y Bond Auction",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T19:00:00-05:00",
+      "title": "FOMC Member Logan Speaks",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-12T19:05:00-05:00",
+      "title": "FOMC Member Miran Speaks",
+      "impact": "Low",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-13T08:30:00-05:00",
+      "title": "Core CPI m/m",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-13T08:30:00-05:00",
+      "title": "CPI m/m",
+      "impact": "High",
+      "country": "USD"
+    },
+    {
+      "date": "2026-02-13T08:30:00-05:00",
+      "title": "CPI y/y",
+      "impact": "High",
+      "country": "USD"
+    }
+  ]
+}

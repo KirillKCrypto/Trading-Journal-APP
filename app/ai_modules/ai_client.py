@@ -9,18 +9,21 @@ from typing import List, Optional
 from sentence_transformers import SentenceTransformer
 from app.models import Trade
 
+
 # Импортируем провайдер новостей
 from ..ai_modules.news_provider import ForexNewsProvider
 
 
 class AI_Client:
     """
-    Оптимизированная AI-система для анализа торговых операций и новостей
+    ПРОСТАЯ AI-система - ключ передается при каждом запросе
     """
 
-    def __init__(self, db_session: Session):
+    def __init__(self, db_session: Session, api_key: str = None):
         self.db = db_session
-        self.api_key = os.getenv("OPENROUTER_API_KEY")
+
+        # Просто сохраняем переданный ключ
+        self.api_key = api_key
 
         # Инициализация AI компонентов
         self._initialize_ai_components()
@@ -28,6 +31,16 @@ class AI_Client:
         # Загрузка и индексация данных
         self._load_and_index_trades()
         self._load_news_data()
+
+    def set_api_key(self, api_key: str):
+        """
+        Простая установка API ключа из localStorage
+        """
+        if api_key and api_key.strip():
+            self.api_key = api_key.strip()
+            print(f"✅ API ключ установлен")
+            return True
+        return False
 
     def _initialize_ai_components(self):
         """Инициализация AI моделей и настроек"""

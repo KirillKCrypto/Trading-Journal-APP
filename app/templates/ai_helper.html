@@ -4,6 +4,12 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ai_helper.css') }}">
 <script defer src="{{ url_for('static', filename='js/ai_helper.js') }}"></script>
+<style>
+  /* Добавим стиль для скрытия элементов */
+  .hidden {
+    display: none !important;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -12,15 +18,61 @@
     <h2 style="margin:0; font-weight:600;">AI Трейдинг Помощник</h2>
   </div>
 
-  <div id="chat-container" class="chatblock"></div>
+  <!-- Форма для API ключа -->
+  <div id="api-key-section">
+    <h3 style="margin-top: 0;">🔑 Введите API ключ</h3>
+    <p style="margin-bottom: 15px;">
+      Чтобы использовать AI, нужен бесплатный ключ от <a href="https://openrouter.ai" target="_blank">OpenRouter API</a>
+    </p>
 
-  <div id="loading-indicator" style="display:none;">
-    <em>Обрабатывается<span id="dots">...</span></em>
+    <div style="display: flex; gap: 10px;">
+      <input type="password"
+             id="api-key-input"
+             placeholder="Введите ключ от OpenRouter..."
+             style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+             autocomplete="off">
+      <button id="save-key-btn"
+              style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Сохранить
+      </button>
+    </div>
+
+    <!-- Статус сохранения ключа -->
+    <div id="key-status" style="margin-top: 10px; display: none;"></div>
   </div>
 
-  <form id="ai-form" class="input-form" autocomplete="off">
-    <textarea id="user_text" name="text" placeholder="Введите запрос..." required></textarea>
-    <button id="submit-btn" type="submit">Отправить</button>
-  </form>
+  <!-- Чат (изначально скрыт) -->
+  <div id="chat-section" class="hidden">
+    <div id="chat-container" class="chatblock"></div>
+
+    <div id="loading-indicator" style="display:none;">
+      <em>Обрабатывается<span id="dots">...</span></em>
+    </div>
+
+    <form id="ai-form" class="input-form" autocomplete="off">
+      <textarea id="user_text" name="text" placeholder="Введите запрос..." required></textarea>
+      <button id="submit-btn" type="submit">Отправить</button>
+    </form>
+  </div>
 </div>
+
+<!-- Добавим inline скрипт для начальной настройки -->
+<script>
+// Начальная проверка API ключа при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+  const savedKey = localStorage.getItem('openrouter_key');
+  const apiKeySection = document.getElementById('api-key-section');
+  const chatSection = document.getElementById('chat-section');
+
+  if (savedKey) {
+    // Ключ есть - показываем чат, скрываем форму
+    if (apiKeySection) apiKeySection.classList.add('hidden');
+    if (chatSection) chatSection.classList.remove('hidden');
+  } else {
+    // Ключа нет - показываем форму, скрываем чат
+    if (apiKeySection) apiKeySection.classList.remove('hidden');
+    if (chatSection) chatSection.classList.add('hidden');
+  }
+});
+</script>
 {% endblock %}
